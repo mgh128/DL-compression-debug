@@ -1,0 +1,69 @@
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<style type="text/css" rel="stylesheet">
+.fullwidth { width: 100%; }
+.label { width: 6em; }
+</style>
+</head>
+<body>
+<div id="app1">
+<table  class="fullwidth">
+<tr><td class="label">Base64 IN</td><td><input class="fullwidth" type="text" v-model="inputBase64"></td></tr>
+<tr><td class="label">Binary OUT</td><td><input class="fullwidth" type="text" v-model="outputBinary"></td></tr>
+<tr><td colspan="2"><hr></td></tr>
+<tr><td class="label">Binary IN</td><td><input class="fullwidth" type="text" v-model="inputBinary"></td></tr>
+<tr><td class="label">Base64 OUT</td><td><input class="fullwidth" type="text" v-model="outputBase64"></td></tr>
+</table>
+
+
+
+</div>
+
+<script language="javascript">
+
+let test="gAMP3K28SqYfuVt4lUxAONfqTGpxA";
+let alphabet="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+let blank="";
+
+	var app1 = new Vue({
+		el: "#app1",
+		data : {
+			inputBase64 : test,
+			alphabet : alphabet,
+			inputBinary : blank
+		},
+		computed : {
+			outputBinary : function() {
+				let rv="";
+				for (let j=0; j<this.inputBase64.length; j++) {
+					let k=this.alphabet.indexOf(this.inputBase64.charAt(j));
+					let m=k.toString(2);
+					let p="0".repeat(6-m.length)+m;
+					rv+=p+" ";
+				}
+			
+				return rv;
+			},
+			outputBase64 : function() {
+			  let rv="";
+			  let inp = this.inputBinary.replace(/ /g,"");
+			  if (inp.length%6 > 0) {
+			      inp+= "0".repeat(6-inp.length%6);
+			  }
+			  for (let j=0; j< inp.length/6; j++) {
+			    let m=inp.substr(j*6,6);
+			    let d=parseInt(m,2);
+			    let c=this.alphabet.charAt(d);
+			    rv+=c;
+			  }
+			  return rv;
+			
+			}
+		}
+	});
+
+</script>
+
+</body>
+</html>
